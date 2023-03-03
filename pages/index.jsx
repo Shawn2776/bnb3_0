@@ -5,6 +5,7 @@ import SmallCard from "../components/SmallCard";
 import MediumCard from "../components/MediumCard";
 import ScrollContainer from "react-indiana-drag-scroll";
 import LargeCard from "../components/LargeCard";
+import Footer from "../components/Footer";
 
 export default function Home({ exploreData, cardsData }) {
   return (
@@ -49,11 +50,13 @@ export default function Home({ exploreData, cardsData }) {
           <LargeCard
             img="https://a0.muscache.com/im/pictures/2da67c1c-0c61-4629-8798-1d4de1ac9291.jpg?im_w=1440"
             title="The Greatest Outdoors"
-            description="Wishlists curated by bnb_3.0"
+            description="Wishlists curated by BnB 3.0"
             buttonText="Get Inspired"
           />
         </section>
       </main>
+
+      <Footer />
     </div>
   );
 }

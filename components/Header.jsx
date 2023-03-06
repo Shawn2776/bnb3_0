@@ -1,8 +1,25 @@
 import Image from "next/image";
 import React, { useState } from "react";
+import "react-date-range/dist/styles.css"; // main style file
+import "react-date-range/dist/theme/default.css"; // theme css file
+import { DateRangePicker } from "react-date-range";
 
 const Header = () => {
   const [searchInput, setSearchInput] = useState("");
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+
+  const handleSelect = (ranges) => {
+    setStartDate(ranges.selection.startDate);
+    setEndDate(ranges.selection.endDate);
+  };
+
+  const selectionRange = {
+    startDate: startDate,
+    endDate: endDate,
+    key: "selection",
+  };
+
   return (
     <header className="sticky top-0 z-50 grid grid-cols-3 bg-white shadow-md p-5 md:px-10">
       {/* LEFT DIV  */}
@@ -18,9 +35,11 @@ const Header = () => {
       {/* MIDDLE DIV - Search */}
       <div className="flex items-center border-2 rounded-full py-2 md:border-2 md:shadow-sm">
         <input
+          value={searchInput}
           className="pl-5 bg-transparent outline-none flex-grow text-sm text-gray-600 placeholder-gray-400"
           type="text"
           placeholder="Start Your Search..."
+          onChange={(e) => setSearchInput(e.target.value)}
         />
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -75,6 +94,33 @@ const Header = () => {
           </svg>
         </div>
       </div>
+      {searchInput && (
+        <div className="flex flex-col col-span-3 mx-auto mt-1">
+          <DateRangePicker
+            ranges={[selectionRange]}
+            minDate={new Date()}
+            rangeColors={["#FD5B61"]}
+            onChange={handleSelect}
+          />
+          <div className="flex items-center mb-4">
+            <h2 className="text-2xl flex-grow font-semibold">
+              Number of Guests
+            </h2>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              className="w-5 h-5 cursor-pointer"
+            >
+              <path
+                fillRule="evenodd"
+                d="M18.685 19.097A9.723 9.723 0 0021.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 003.065 7.097A9.716 9.716 0 0012 21.75a9.716 9.716 0 006.685-2.653zm-12.54-1.285A7.486 7.486 0 0112 15a7.486 7.486 0 015.855 2.812A8.224 8.224 0 0112 20.25a8.224 8.224 0 01-5.855-2.438zM15.75 9a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </div>
+        </div>
+      )}
     </header>
   );
 };

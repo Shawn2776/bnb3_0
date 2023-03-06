@@ -1,7 +1,8 @@
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 
 const Header = () => {
+  const [searchInput, setSearchInput] = useState("");
   return (
     <header className="sticky top-0 z-50 grid grid-cols-3 bg-white shadow-md p-5 md:px-10">
       {/* LEFT DIV  */}

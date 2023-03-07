@@ -3,11 +3,13 @@ import React, { useState } from "react";
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
 import { DateRangePicker } from "react-date-range";
+import Link from "next/link";
 
 const Header = () => {
   const [searchInput, setSearchInput] = useState("");
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
+  const [numOfGuests, setNumOfGuests] = useState(1);
 
   const handleSelect = (ranges) => {
     setStartDate(ranges.selection.startDate);
@@ -20,16 +22,22 @@ const Header = () => {
     key: "selection",
   };
 
+  const resetInput = () => {
+    setSearchInput("");
+  };
+
   return (
     <header className="sticky top-0 z-50 grid grid-cols-3 bg-white shadow-md p-5 md:px-10">
       {/* LEFT DIV  */}
       <div className="relative flex items-center h-10 cursor-pointer my-auto">
-        <Image
-          src="https://links.papareact.com/qd3"
-          layout="fill"
-          objectFit="contain"
-          objectPosition="left"
-        />
+        <Link href="/">
+          <Image
+            src="https://links.papareact.com/qd3"
+            layout="fill"
+            objectFit="contain"
+            objectPosition="left"
+          />
+        </Link>
       </div>
 
       {/* MIDDLE DIV - Search */}
@@ -102,22 +110,38 @@ const Header = () => {
             rangeColors={["#FD5B61"]}
             onChange={handleSelect}
           />
-          <div className="flex items-center mb-4">
+          <div className="flex items-center border-b mb-4">
             <h2 className="text-2xl flex-grow font-semibold">
               Number of Guests
             </h2>
             <svg
               xmlns="http://www.w3.org/2000/svg"
+              fill="none"
               viewBox="0 0 24 24"
-              fill="currentColor"
-              className="w-5 h-5 cursor-pointer"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-5 h-5"
             >
               <path
-                fillRule="evenodd"
-                d="M18.685 19.097A9.723 9.723 0 0021.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 003.065 7.097A9.716 9.716 0 0012 21.75a9.716 9.716 0 006.685-2.653zm-12.54-1.285A7.486 7.486 0 0112 15a7.486 7.486 0 015.855 2.812A8.224 8.224 0 0112 20.25a8.224 8.224 0 01-5.855-2.438zM15.75 9a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
-                clipRule="evenodd"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"
               />
             </svg>
+
+            <input
+              type="number"
+              className="w-12 pl-2 text-lg outline-none text-red-400"
+              value={numOfGuests}
+              onChange={(e) => setNumOfGuests(e.target.value)}
+              min={1}
+            />
+          </div>
+          <div className="flex">
+            <button className="flex-grow text-gray-500" onClick={resetInput}>
+              Cancel
+            </button>
+            <button className="flex-grow text-red-400">Search</button>
           </div>
         </div>
       )}

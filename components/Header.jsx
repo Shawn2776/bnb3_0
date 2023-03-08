@@ -1,15 +1,17 @@
-import Image from "next/image";
+import Image from "next/legacy/image";
 import React, { useState } from "react";
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
 import { DateRangePicker } from "react-date-range";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
-const Header = () => {
+const Header = ({ placeholder }) => {
   const [searchInput, setSearchInput] = useState("");
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [numOfGuests, setNumOfGuests] = useState(1);
+  const router = useRouter();
 
   const handleSelect = (ranges) => {
     setStartDate(ranges.selection.startDate);
@@ -24,6 +26,18 @@ const Header = () => {
 
   const resetInput = () => {
     setSearchInput("");
+  };
+
+  const search = () => {
+    router.push({
+      pathname: "/search",
+      query: {
+        location: searchInput,
+        startDate: startDate.toISOString(),
+        endDate: endDate.toISOString(),
+        numOfGuests,
+      },
+    });
   };
 
   return (
@@ -46,7 +60,7 @@ const Header = () => {
           value={searchInput}
           className="pl-5 bg-transparent outline-none flex-grow text-sm text-gray-600 placeholder-gray-400"
           type="text"
-          placeholder="Start Your Search..."
+          placeholder={placeholder || "Start Your Search..."}
           onChange={(e) => setSearchInput(e.target.value)}
         />
         <svg
@@ -120,7 +134,7 @@ const Header = () => {
               viewBox="0 0 24 24"
               stroke-width="1.5"
               stroke="currentColor"
-              class="w-5 h-5"
+              className="w-5 h-5"
             >
               <path
                 stroke-linecap="round"
@@ -141,7 +155,12 @@ const Header = () => {
             <button className="flex-grow text-gray-500" onClick={resetInput}>
               Cancel
             </button>
-            <button className="flex-grow text-red-400">Search</button>
+            <button
+              onClick={(e) => search(e, "/about")}
+              className="flex-grow text-red-400"
+            >
+              Search
+            </button>
           </div>
         </div>
       )}

@@ -1,10 +1,8 @@
 import React, { useState } from "react";
-import Map, { Marker, Popup } from "react-map-gl";
 import { getCenter } from "geolib";
+import { GoogleMap, useLoadScript, MarkerF } from "@react-google-maps/api";
 
 const Mapp = ({ searchResults }) => {
-  const [selectedLocation, setSelectedLocation] = useState({});
-
   // transform the search results object into the
   // { latitude: 52.343, longitude: 13.345 }
   // object
@@ -15,34 +13,29 @@ const Mapp = ({ searchResults }) => {
 
   const center = getCenter(coordinates);
 
-  const [viewport, setViewport] = useState({
-    width: "10%",
-    height: "10%",
-    latitude: center.latitude,
-    longitude: center.longitude,
-    zoom: 11,
+  const { isLoaded } = useLoadScript({
+    googleMapsApiKey: process.env.NEXT_PUBLIC_API_KEY,
   });
 
+  if (!isLoaded) return <div>Loading ...</div>;
+
+  // const center = useMemo(() => ({ lat: 47.67646, lng: -116.79637 }), []);
+
   return (
-    <Map
-      mapStyle="mapbox://styles/shawn2776/cleyspa6f000c01of1wkzgovi"
-      mapboxAccessToken={process.env.mapbox_key}
-      {...viewport}
-      onMove={(evt) => setViewport(evt.viewport)}
-    >
-      {searchResults.map((result, index) => (
-        <div key={index}>
-          <Marker
-            longitude={result.long}
-            latitude={result.lat}
-            offsetLeft={-1}
-            offsetTop={-1}
-          >
-            <div className="text-2xl animate-bounce">📌</div>
-          </Marker>
-        </div>
-      ))}
-    </Map>
+    <div className="w-full h-full border-red-500">
+      <GoogleMap
+        zoom={13}
+        center={{ lat: center.latitude, lng: center.longitude }}
+        mapContainerClassName="map-container"
+      >
+        {searchResults.map((result) => (
+          <div key={result.lat}>
+            {console.log(result.lat)}
+            <MarkerF position={{ lat: result.lat, lng: result.long }}></MarkerF>
+          </div>
+        ))}
+      </GoogleMap>
+    </div>
   );
 };
 
